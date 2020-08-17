@@ -16,6 +16,9 @@ api:
           requests:
             - name: list_users
               method: get
+              headers:
+                client_id: '123'
+                access_token: 'accesstoken'
               vars:
                 user_id: ${{ response.json()[0]["id"] }}
               tests:
@@ -31,6 +34,7 @@ api:
               method: post
               headers:
                 client_id: '123'
+                access_token: 'accesstoken'
               body:
                 choice: ${user_id}
               tests:
@@ -39,6 +43,9 @@ api:
 
             - name: wrong_post
               method: post
+              headers:
+                client_id: '123'
+                access_token: 'accesstoken'
               tests:
-                - name: status_code_is_422
-                  assert: ${{ response.status_code == 422 }}
+                - name: status_code_is_400
+                  assert: ${{ response.status_code == 400 }}

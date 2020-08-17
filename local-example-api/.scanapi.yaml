@@ -1,0 +1,7 @@
+project_name: local-project
+output_path: my-local-report.html
+report:
+  hide_request:
+    headers:
+      - client_id
+      - access_token
