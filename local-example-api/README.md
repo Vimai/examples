@@ -23,4 +23,4 @@ Running scanapi:
 $ scanapi scanapi.yaml
 ```
 
-The report will be available at `scanapi-report.html`
+The report will be available at `my-local-report.html`
