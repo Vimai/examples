@@ -45,7 +45,17 @@ class Users:
     def on_post(self, req, res):
         self.logger.info(f'Start: POST')
         body = req.stream.read(req.content_length or 0)
-        body = json.loads(body.decode('utf-8'), parse_float=Decimal)
+        try:
+            body = json.loads(body.decode('utf-8'), parse_float=Decimal)
+        except ValueError as err:
+            res.status = falcon.get_http_status(status_code=400)
+            response = {
+                "msg": 'not a valid json',
+            }
+            res.body = json.dumps(response)
+            self.logger.info(f'End.')
+            return
+
         res.status = falcon.get_http_status(status_code=200)
 
         chose = 0
