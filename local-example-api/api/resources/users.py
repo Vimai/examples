@@ -67,7 +67,7 @@ class Users:
                 "msg": f'chose {chose}' if chose else 'chose default',
             }
         else:
-            res.status = falcon.get_http_status(status_code=422)
+            res.status = falcon.get_http_status(status_code=400)
             response_dict = {
                 "msg": 'choice not passed',
             }
