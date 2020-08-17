@@ -1,0 +1,44 @@
+api:
+  endpoints:
+    - name: local-example-api # The API's name of your API
+      path: http://localhost:3000/ # The API's base url
+      requests:
+        - name: list_ # The name of the first request
+          path: / # The path of the first request
+          method: get # The HTTP method of the first request
+          tests:
+            - name: status_code_is_200 # The name of the first test for this request
+              assert:  ${{ response.status_code == 200 }}  # The assertion
+
+      endpoints:
+        - name: users
+          path: users
+          requests:
+            - name: list_users
+              method: get
+              vars:
+                user_id: ${{ response.json()[0]["id"] }}
+              tests:
+                - name: status_code_is_200
+                  assert: ${{ response.status_code == 200 }}
+                - name: response_time_is_under_half_second
+                  assert: ${{ response.elapsed.total_seconds() < 0.5 }}
+                - name: count_is_equals_to_2
+                  assert: ${{ len(response.json()) == 2 }}
+                - name: first_name_is_ana
+                  assert: ${{ response.json()[0]['name'] == 'ana' }}
+            - name: details
+              method: post
+              headers:
+                client_id: '123'
+              body:
+                choice: ${user_id}
+              tests:
+                - name: status_code_is_200
+                  assert: ${{ response.status_code == 200 }}
+
+            - name: wrong_post
+              method: post
+              tests:
+                - name: status_code_is_422
+                  assert: ${{ response.status_code == 422 }}
